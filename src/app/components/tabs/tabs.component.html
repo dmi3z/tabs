@@ -1,0 +1,36 @@
+<div class="tabs">
+  <div class="ruler" #ruler>
+    <div
+      class="tab"
+      *ngFor="let tab of tabs; let i = index"
+      [class.tab_active]="i === activeTabIndex"
+      [class.tab_overflowed]="i >= hiddenIndex"
+      (click)="openTab(i)"
+    >
+      {{ tab.title }}
+      <div class="tab_close" (click)="removeTab($event, i)"></div>
+    </div>
+
+    <div class="drpd" *ngIf="overflowed">
+      <!-- <div
+        class="tab"
+        *ngFor="let tab of tabs; let i = index"
+        [class.tab_active]="i === activeTabIndex"
+        [class.tab_overflowed]="i < hiddenIndex"
+        (click)="openTab(i)"
+      >
+        {{ tab.title }}
+      </div> -->
+    </div>
+  </div>
+
+  <div class="content">
+    <div
+      class="view"
+      *ngFor="let tab of tabs; let i = index"
+      [class.view_hidden]="i !== activeTabIndex"
+    >
+      <ng-container #content></ng-container>
+    </div>
+  </div>
+</div>
