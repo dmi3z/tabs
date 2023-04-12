@@ -2,25 +2,38 @@
   <div class="ruler" #ruler>
     <div
       class="tab"
-      *ngFor="let tab of tabs; let i = index"
+      *ngFor="let tab of tabs | appOverflowTabs : hiddenIndex; let i = index"
       [class.tab_active]="i === activeTabIndex"
-      [class.tab_overflowed]="i >= hiddenIndex"
       (click)="openTab(i)"
     >
-      {{ tab.title }}
+      <span class="title">{{ tab.title }}</span>
       <div class="tab_close" (click)="removeTab($event, i)"></div>
     </div>
 
-    <div class="drpd" *ngIf="overflowed">
-      <!-- <div
-        class="tab"
-        *ngFor="let tab of tabs; let i = index"
-        [class.tab_active]="i === activeTabIndex"
-        [class.tab_overflowed]="i < hiddenIndex"
-        (click)="openTab(i)"
-      >
-        {{ tab.title }}
-      </div> -->
+    <div
+      class="tab more"
+      tabindex="0"
+      *ngIf="overflowed"
+      [class.tab_active]="activeTabIndex >= hiddenIndex"
+    >
+      More
+      <div class="dropdown">
+        <div
+          class="tab"
+          *ngFor="
+            let tab of tabs | appOverflowTabs : hiddenIndex : true;
+            let i = index
+          "
+          [class.tab_active]="hiddenIndex + i === activeTabIndex"
+          (click)="openTab(hiddenIndex + i)"
+        >
+          <span class="title">{{ tab.title }}</span>
+          <div
+            class="tab_close"
+            (click)="removeTab($event, hiddenIndex + i)"
+          ></div>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -5,6 +5,8 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   QueryList,
   SimpleChanges,
   ViewChild,
@@ -12,13 +14,16 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { TabComponent } from './interfaces/tab-component.interface';
+import { Subject, fromEvent, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
 })
-export class TabsComponent implements AfterViewInit, OnChanges {
+export class TabsComponent
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy
+{
   @Input() public tabs: TabComponent[] = [];
   @ViewChild('ruler') public rulerRef!: ElementRef<HTMLDivElement>;
   @ViewChildren('content', { read: ViewContainerRef })
@@ -28,8 +33,13 @@ export class TabsComponent implements AfterViewInit, OnChanges {
   protected hiddenIndex!: number;
 
   private tabEntities: ComponentRef<any>[] = [];
+  private destroy$ = new Subject<void>();
 
   constructor() {}
+
+  ngOnInit(): void {
+    this.handleViewResize();
+  }
 
   ngAfterViewInit(): void {
     this.tabEntities = this.contentRefs.map((contentRef, index) => {
@@ -43,9 +53,11 @@ export class TabsComponent implements AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const tabsChanges = changes['tabs'];
     if (tabsChanges && !tabsChanges.firstChange) {
-      this.addTab(
-        tabsChanges.currentValue[tabsChanges.currentValue.length - 1]
-      );
+      const prevTabs = tabsChanges.previousValue as TabComponent[];
+      const curTabs = tabsChanges.currentValue as TabComponent[];
+      const diff = curTabs.filter((tab) => !prevTabs.includes(tab));
+
+      this.addTabs(diff);
     }
   }
 
@@ -60,33 +72,51 @@ export class TabsComponent implements AfterViewInit, OnChanges {
   protected removeTab(event: MouseEvent, tabIndex: number): void {
     event.stopPropagation();
     this.tabEntities[tabIndex].destroy();
-    this.tabs.splice(tabIndex, 1);
+    this.tabs = this.tabs.filter((_, index) => index !== tabIndex);
 
     if (tabIndex === this.activeTabIndex) {
       this.activeTabIndex = 0;
     }
+
+    if (tabIndex < this.activeTabIndex) {
+      this.activeTabIndex--;
+    }
+
     this.calculateDimensions();
   }
 
-  private addTab(tab: TabComponent): void {
+  private addTabs(tabs: TabComponent[]): void {
     setTimeout(() => {
       const contentRefs = this.contentRefs.toArray();
-      const tabEntity = contentRefs[contentRefs.length - 1].createComponent(
-        tab.component
+      const startAddPosition = contentRefs.length - tabs.length;
+      const tabEntities = tabs.map((tab, index) =>
+        contentRefs[startAddPosition + index].createComponent(tab.component)
       );
-      this.tabEntities.push(tabEntity);
-
+      this.tabEntities = [...this.tabEntities, ...tabEntities];
       this.calculateDimensions();
     }, 0);
   }
 
   private calculateDimensions(): void {
-    const rulerWidth = this.rulerRef.nativeElement.clientWidth - 250;
+    const rulerWidth = this.rulerRef.nativeElement.clientWidth - 150;
     const tabsWidth = this.tabs.length * 150;
 
     this.overflowed = tabsWidth >= rulerWidth;
-    if (this.overflowed && !this.hiddenIndex) {
-      this.hiddenIndex = this.tabs.length - 1;
+    if (this.overflowed) {
+      this.hiddenIndex = Math.floor(rulerWidth / 150);
+    } else {
+      this.hiddenIndex = this.tabs.length;
     }
+  }
+
+  private handleViewResize(): void {
+    fromEvent(window, 'resize')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.calculateDimensions());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

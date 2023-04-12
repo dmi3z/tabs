@@ -23,10 +23,10 @@ export class AppComponent implements AfterViewInit {
 
   public addTab(): void {
     const tab: TabComponent = {
-      title: 'Tab Title',
+      title: Math.random().toString(),
       component: TestComponent,
     };
 
-    this.tabs = [...this.tabs, tab];
+    this.tabs = [...this.tabs, tab, tab];
   }
 }
