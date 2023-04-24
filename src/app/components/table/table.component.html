@@ -1,0 +1,70 @@
+<div class="table">
+  <div class="filter">
+    <div class="filter-icon" (click)="openFilterDialog()"></div>
+
+    <div class="pagination" *ngIf="settings.pagination">
+      <app-pagination
+        [pagesCount]="pagesCount"
+        [itemsPerPage]="settings.size || 10"
+        [currentPageIndex]="settings.page || 0"
+        (pageChanged)="changePage($event)"
+      ></app-pagination>
+    </div>
+  </div>
+
+  <div class="content">
+    <form class="header" [formGroup]="filtersForm">
+      <div
+        class="item item_filter"
+        *ngIf="settings.filterable"
+        (click)="searchItems(filtersForm.value)"
+      ></div>
+      <div class="item item_checker" *ngIf="settings.selectable">
+        <app-multiselect-checkbox
+          (checked)="multiselectChecked()"
+          [state]="checkboxesState"
+        ></app-multiselect-checkbox>
+      </div>
+      <div
+        [sortable]="column.key"
+        (sort)="sortBy($event)"
+        class="item"
+        *ngFor="let column of columns | keyvalue : originalOrder"
+      >
+        {{ column.value }}
+        <input
+          *ngIf="settings.filterable"
+          type="text"
+          class="filter"
+          [formControlName]="column.key"
+          (click)="filterSelected($event)"
+        />
+      </div>
+    </form>
+
+    <form [formGroup]="contentForm" class="body">
+      <div class="body-row" *ngFor="let item of data$ | async">
+        <div class="item item_filter" *ngIf="settings.filterable"></div>
+        <div class="item item_checker" *ngIf="settings.selectable">
+          <app-checkbox [formControlName]="item.id"></app-checkbox>
+        </div>
+        <div
+          class="item"
+          *ngFor="let cell of columns | keyvalue : originalOrder"
+        >
+          <span class="field-name">{{ cell.value }}:</span>
+          {{ item[cell.key] }}
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="pagination" *ngIf="settings.pagination">
+    <app-pagination
+      [pagesCount]="pagesCount"
+      [itemsPerPage]="settings.size || 10"
+      [currentPageIndex]="settings.page || 0"
+      (pageChanged)="changePage($event)"
+    ></app-pagination>
+  </div>
+</div>

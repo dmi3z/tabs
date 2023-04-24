@@ -1,0 +1,32 @@
+<div class="branch" tabindex="0">
+  <ng-container *ngIf="node.children; then group; else single"></ng-container>
+
+  <div class="children" [class.collapsed]="node.collapsed">
+    <app-branch
+      *ngFor="let branch of node.children"
+      [node]="branch"
+    ></app-branch>
+  </div>
+</div>
+
+<ng-template #group>
+  <div
+    class="branch-title"
+    [class.branch-title_child]="!node.children"
+    (click)="toggleChildren()"
+  >
+    <div class="icon folder" [class.folder_opened]="!node.collapsed"></div>
+    <span [class.group]="node.children">{{ node.title }}</span>
+  </div>
+</ng-template>
+
+<ng-template #single>
+  <div
+    class="branch-title"
+    [class.branch-title_child]="!node.children"
+    (click)="selected()"
+  >
+    <div class="icon single"></div>
+    <span [class.group]="node.children">{{ node.title }}</span>
+  </div>
+</ng-template>

@@ -1,0 +1,7 @@
+<div class="tree">
+  <app-branch
+    *ngFor="let node of data"
+    [node]="node"
+    (itemSelected)="selected($event)"
+  ></app-branch>
+</div>

@@ -1,0 +1,75 @@
+$border-color: #ced4da;
+$active-color: #0d6efd;
+
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba($color: #000000, $alpha: 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+
+  .dialog {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    padding-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+
+    .field {
+      display: flex;
+      width: 100%;
+      height: 35px;
+      margin-bottom: 15px;
+      align-items: center;
+      justify-content: space-between;
+
+      .label {
+        margin-right: 15px;
+        font-weight: bold;
+        text-transform: capitalize;
+      }
+
+      .input {
+        height: 100%;
+        border: 1px solid $border-color;
+        border-radius: 4px;
+        padding-left: 10px;
+      }
+    }
+
+    .actions {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+
+      .btn {
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: $border-color;
+        margin-right: 15px;
+        cursor: pointer;
+        border-radius: 5px;
+        height: 40px;
+
+        &_apply {
+          background: $active-color;
+          color: white;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}

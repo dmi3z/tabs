@@ -1,0 +1,58 @@
+$border-color: #ced4da;
+$active-color: #0d6efd;
+
+.pagination {
+  height: 100%;
+  display: flex;
+  cursor: pointer;
+
+  .button {
+    height: 100%;
+    width: 32px;
+    border: 1px solid $border-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: none;
+    user-select: none;
+    font-family: Roboto, sans-serif;
+
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+
+    &:last-child {
+      border-radius: 0 5px 5px 0;
+      border-right: 1px solid $border-color;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    &_nav {
+      width: 36px;
+      background-position: center;
+      background-size: 12px 12px;
+      background-repeat: no-repeat;
+    }
+
+    &_active {
+      background-color: $active-color !important;
+      color: white;
+    }
+
+    &_disabled {
+      cursor: default;
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    &_forward {
+      background-image: url("../../../../../assets/forward.svg");
+    }
+
+    &_back {
+      background-image: url("../../../../../assets/back.svg");
+    }
+  }
+}

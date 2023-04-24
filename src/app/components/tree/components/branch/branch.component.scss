@@ -1,0 +1,56 @@
+.branch {
+  width: 200px;
+  font-family: Roboto, sans-serif;
+
+  &-title {
+    width: 100%;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    .icon {
+      width: 25px;
+      height: 25px;
+      margin-right: 15px;
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .folder {
+      background-image: url("../../../../../assets/folder.svg");
+
+      &_opened {
+        background-image: url("../../../../../assets/folder_opened.svg");
+      }
+    }
+
+    .single {
+      height: 15px;
+      background-image: url("../../../../../assets/item.svg");
+    }
+
+    .group {
+      font-weight: bold;
+    }
+
+    &:hover {
+      background: lightgray;
+    }
+  }
+}
+
+.children {
+  transition: height 0.4s;
+  padding-left: 15px;
+  box-sizing: border-box;
+}
+
+.collapsed {
+  height: 0;
+  overflow: hidden;
+}

@@ -1,0 +1,20 @@
+$primary: #0d6efd;
+
+.checkbox {
+  width: 15px;
+  height: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+.shadow-checkbox {
+  display: none;
+
+  &:checked + .checkbox {
+    background-color: $primary;
+    border: 1px solid $primary;
+    background-image: url("../../../../../assets/done.svg");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}

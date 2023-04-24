@@ -1,0 +1,16 @@
+<div class="wrapper" (click)="closeDialog()">
+  <form [formGroup]="filterForm" class="dialog" (click)="stopProp($event)">
+    <div
+      class="field"
+      *ngFor="let field of filterFields | keyvalue : originalOrder"
+    >
+      <span class="label">{{ field.value }}:</span>
+      <input class="input" [formControlName]="field.key" type="text" />
+    </div>
+
+    <div class="actions">
+      <div class="btn" (click)="closeDialog()">Cancel</div>
+      <div class="btn btn_apply" (click)="apply()">Apply</div>
+    </div>
+  </form>
+</div>
