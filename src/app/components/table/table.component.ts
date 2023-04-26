@@ -10,10 +10,12 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+
 import { BehaviorSubject, Subject, take, takeUntil } from 'rxjs';
+
 import { SortEvent, SortableHeader } from './directives/sortable.directive';
 import { TableSettings } from './interfaces/table-settings.interface';
-import { originalOrder, stopProp } from './utils/utils';
+import { originalOrder, sortAsc, sortDesc, stopProp } from './utils/utils';
 import { FilterDialogComponent } from './components/filter-dialog/filter-dialog.component';
 import { CheckboxState } from './constants/checkbox-state';
 
@@ -94,28 +96,12 @@ export class TableComponent<T extends { id: number; [key: string]: any }>
         break;
 
       case 'asc':
-        const sortedDataAsc = [...this.data].sort((a, b) => {
-          if (typeof a[column] === 'number' && typeof b[column] === 'number') {
-            return a[column] - b[column];
-          } else {
-            const strA = a[column];
-            const strB = b[column];
-            return strA.localeCompare(strB);
-          }
-        });
+        const sortedDataAsc = sortAsc(this.data, column);
         this.refreshData(sortedDataAsc);
         break;
 
       case 'desc':
-        const sortedDataDesc = [...this.data].sort((a, b) => {
-          if (typeof a[column] === 'number' && typeof b[column] === 'number') {
-            return b[column] - a[column];
-          } else {
-            const strA = a[column];
-            const strB = b[column];
-            return strB.localeCompare(strA);
-          }
-        });
+        const sortedDataDesc = sortDesc(this.data, column);
         this.refreshData(sortedDataDesc);
         break;
     }
