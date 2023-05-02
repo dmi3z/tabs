@@ -1,5 +1,4 @@
-$border-color: #ced4da;
-$active-color: #0d6efd;
+@import "bootstrap/scss/bootstrap";
 
 .pagination {
   height: 100%;
@@ -38,7 +37,7 @@ $active-color: #0d6efd;
     }
 
     &_active {
-      background-color: $active-color !important;
+      background-color: $primary !important;
       color: white;
     }
 

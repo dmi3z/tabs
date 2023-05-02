@@ -1,0 +1,15 @@
+<div class="carousel">
+  <div class="arrow arrow_prev" (click)="slidePrev()" tabindex="0"></div>
+  <div class="viewbox" #carousel>
+    <div
+      #content
+      class="content"
+      [style.transform]="'translateX(' + position + 'px)'"
+    >
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <div class="arrow" (click)="slideNext()" tabindex="0"></div>
+
+  <!-- <div class="navigation"></div> -->
+</div>

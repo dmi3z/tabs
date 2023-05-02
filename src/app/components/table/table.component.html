@@ -1,6 +1,10 @@
 <div class="table">
   <div class="filter">
-    <div class="filter-icon" (click)="openFilterDialog()"></div>
+    <div
+      class="filter-icon"
+      *ngIf="settings.filterable"
+      (click)="openFilterDialog()"
+    ></div>
 
     <div class="pagination" *ngIf="settings.pagination">
       <app-pagination
@@ -31,11 +35,11 @@
         class="item"
         *ngFor="let column of columns | keyvalue : originalOrder"
       >
-        {{ column.value }}
+        <div class="item-title">{{ column.value }}</div>
         <input
           *ngIf="settings.filterable"
           type="text"
-          class="filter"
+          class="filter-input"
           [formControlName]="column.key"
           (click)="filterSelected($event)"
         />

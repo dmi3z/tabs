@@ -1,3 +1,5 @@
+@import "bootstrap/scss/bootstrap";
+
 .table {
   width: 100%;
   display: flex;
@@ -47,6 +49,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
+        padding: 0 0.5rem;
 
         &_filter::before {
           content: "";
@@ -59,13 +62,17 @@
           background-size: contain;
           cursor: pointer;
         }
+
+        &_checker {
+          padding-left: 15px;
+        }
       }
 
-      .asc::before {
+      .asc > .item-title::before {
         content: "";
         position: absolute;
         left: -7px;
-        top: 10px;
+        top: 8px;
         width: 20px;
         height: 20px;
         background-image: url("../../../assets/arrow.svg");
@@ -74,11 +81,11 @@
         background-size: contain;
       }
 
-      .desc::before {
+      .desc > .item-title::before {
         content: "";
         position: absolute;
         left: -7px;
-        top: 10px;
+        top: 8px;
         width: 20px;
         height: 20px;
         background-image: url("../../../assets/arrow.svg");
@@ -88,11 +95,12 @@
         transform: rotate(180deg);
       }
 
-      .filter {
+      .filter-input {
         height: 25px;
         border: 1px solid rgba(0, 0, 0, 0.25);
         border-radius: 3px;
         outline: none;
+        width: 90%;
       }
     }
 
@@ -144,7 +152,7 @@
   height: 40px;
 }
 
-@media screen and (max-width: 1024px) {
+@include media-breakpoint-down(lg) {
   .table {
     .content {
       .header {
